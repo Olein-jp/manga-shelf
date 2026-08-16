@@ -84,6 +84,7 @@ final class Templates {
 			. '<!-- wp:manga-shelf/volume-number /-->'
 			. '<!-- wp:manga-shelf/volume-release-date /-->'
 			. '<!-- wp:manga-shelf/volume-purchase-link /-->'
+			. '<!-- wp:manga-shelf/volume-amazon-link /-->'
 			. '</div><!-- /wp:group -->'
 			. '</div><!-- /wp:group -->'
 			. '<!-- /wp:manga-shelf/volume-list -->';

@@ -55,6 +55,7 @@ final class Plugin {
 		( new Meta() )->register();
 		( new Schema() )->register();
 		( new Settings() )->register();
+		( new \MangaShelf\Integrations\Amazon\Settings() )->register();
 		( new Attribution() )->register();
 		( new MangaDetails() )->register();
 		( new MangaImport() )->register();

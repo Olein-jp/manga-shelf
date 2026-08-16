@@ -53,6 +53,7 @@ final class Blocks {
 			MANGA_SHELF_VERSION
 		);
 		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/cover-image' );
+		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-amazon-link' );
 		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-cover' );
 		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-isbn' );
 		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-list' );

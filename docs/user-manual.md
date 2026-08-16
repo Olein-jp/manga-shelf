@@ -45,6 +45,23 @@ define( 'MANGA_SHELF_RAKUTEN_ACCESS_KEY', 'your-access-key' );
 define( 'MANGA_SHELF_RAKUTEN_AFFILIATE_ID', 'your-affiliate-id' );
 ```
 
+### Amazonリンクを設定する
+
+各巻のAmazonリンクは、保存済みのISBNをAmazon.co.jpの書籍検索へ渡して作成します。Amazonの商品情報APIは利用しないため、APIキーは不要です。
+
+1. Amazonアソシエイトを利用する場合は、Amazonアソシエイト・セントラルでトラッキングIDを確認します。
+2. WordPress管理画面の「漫画 → Amazon設定」を開きます。
+3. 「アソシエイト・トラッキングID」を入力して保存します。
+4. サイトエディターの「漫画：巻一覧」の内側へ「漫画：各巻のAmazonリンク」を追加します。
+
+トラッキングIDを設定しなくても通常のAmazon検索リンクとして利用できます。`wp-config.php`で管理する場合は次の定数を利用できます。
+
+```php
+define( 'MANGA_SHELF_AMAZON_TRACKING_ID', 'your-tracking-id-22' );
+```
+
+ISBNとAmazonのASINが同一とは限らないため、Manga ShelfはISBNから商品詳細URLを推測せず、書籍検索ページへリンクします。トラッキングID使用時はリンク直後の「（広告）」と、Amazon指定のアソシエイト表記を自動出力します。あわせて、Amazonアソシエイトの登録サイト、リンク確認、サイト情報やプライバシーポリシーなども最新の規約に合わせて確認してください。
+
 ## 2. 楽天から漫画を登録する
 
 1. 「漫画 → 楽天から追加」を開きます。
@@ -160,6 +177,7 @@ your-theme/
             <!-- wp:manga-shelf/volume-number /-->
             <!-- wp:manga-shelf/volume-release-date /-->
             <!-- wp:manga-shelf/volume-purchase-link /-->
+            <!-- wp:manga-shelf/volume-amazon-link /-->
         </div>
         <!-- /wp:group -->
     </div>
@@ -247,8 +265,9 @@ get_footer();
 - 漫画：各巻の発売日
 - 漫画：各巻のISBN
 - 漫画：各巻の楽天リンク
+- 漫画：各巻のAmazonリンク
 
-たとえば「左側に書影、右側にタイトルと発売日」「書影を上、購入リンクを下」「タイトルから楽天へリンク」といった構成にできます。書影ブロックでは幅、タイトルブロックではHTML要素と商品リンク、巻数・発売日・ISBNでは前後の文字、楽天リンクではリンク文言を設定できます。
+たとえば「左側に書影、右側にタイトルと発売日」「書影を上、楽天・Amazonリンクを下」「タイトルから楽天へリンク」といった構成にできます。書影ブロックでは幅、タイトルブロックではHTML要素と商品リンク、巻数・発売日・ISBNでは前後の文字、楽天・Amazonリンクではリンク文言を設定できます。
 
 編集手順は次のとおりです。
 

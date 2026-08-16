@@ -9,7 +9,8 @@
 				[ 'manga-shelf/volume-title', { level: 3 } ],
 				[ 'manga-shelf/volume-number' ],
 				[ 'manga-shelf/volume-release-date' ],
-				[ 'manga-shelf/volume-purchase-link' ]
+				[ 'manga-shelf/volume-purchase-link' ],
+				[ 'manga-shelf/volume-amazon-link' ]
 			] ]
 		] ]
 	];
@@ -115,6 +116,13 @@
 
 	blocks.registerBlockType( 'manga-shelf/volume-purchase-link', {
 		edit: fieldEdit( i18n.__( '各巻の楽天リンク', 'manga-shelf' ), function ( props ) {
+			return panel( el( components.TextControl, { label: i18n.__( 'リンク文言', 'manga-shelf' ), value: props.attributes.label, onChange: function ( value ) { props.setAttributes( { label: value } ); } } ) );
+		} ),
+		save: function () { return null; }
+	} );
+
+	blocks.registerBlockType( 'manga-shelf/volume-amazon-link', {
+		edit: fieldEdit( i18n.__( '各巻のAmazonリンク', 'manga-shelf' ), function ( props ) {
 			return panel( el( components.TextControl, { label: i18n.__( 'リンク文言', 'manga-shelf' ), value: props.attributes.label, onChange: function ( value ) { props.setAttributes( { label: value } ); } } ) );
 		} ),
 		save: function () { return null; }

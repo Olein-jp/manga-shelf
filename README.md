@@ -16,9 +16,10 @@
 - 出版社・評価・最新巻・発売日の Core Block Variation
 - 1巻分のレイアウトを自由に構成できる動的な「漫画：巻一覧」ブロック
 - 各巻の書影、タイトル、巻数、発売日、ISBN、楽天リンク用ブロック
+- ISBNを利用した各巻のAmazon.co.jp検索リンク（アソシエイト・トラッキングID対応）
 - 作品詳細パターンと個別作品・作品一覧のプラグインテンプレート
 
-定期新刊監視、Action Scheduler、Amazon連携、フロント側検索・絞り込み、一般ユーザー用ライブラリは v0.2 以降の対象です。
+定期新刊監視、Action Scheduler、Amazon Product Advertising API連携、フロント側検索・絞り込み、一般ユーザー用ライブラリは v0.2 以降の対象です。
 
 ## 利用者向けマニュアル
 
@@ -56,12 +57,15 @@ npm run env:stop
 4. 「漫画 → 楽天から追加」で作品名を検索し、紙の通常版コミックスを選びます。
 5. 作成された下書きで感想、読書状態、評価などを編集して公開します。
 
+Amazonリンクを使う場合は「漫画 → Amazon設定」でアソシエイト・トラッキングIDを設定します。未設定でも通常のAmazon.co.jp検索リンクとして利用できます。
+
 アプリケーションIDとアフィリエイトIDは、保存値の代わりに `wp-config.php` からも設定できます。
 
 ```php
 define( 'MANGA_SHELF_RAKUTEN_APPLICATION_ID', 'your-application-id' );
 define( 'MANGA_SHELF_RAKUTEN_ACCESS_KEY', 'your-access-key' );
 define( 'MANGA_SHELF_RAKUTEN_AFFILIATE_ID', 'your-affiliate-id' );
+define( 'MANGA_SHELF_AMAZON_TRACKING_ID', 'your-tracking-id-22' );
 ```
 
 楽天検索を実行すると、検索語とサイトURLを含むリクエストが楽天Web Serviceへ送信されます。MVPでは「紙の通常版」を基準にし、特装版、限定版、文庫版、完全版、新装版、電子版を既刊一括取込から除外します。判定結果は公開前に確認してください。
@@ -78,7 +82,7 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 
 ## リリース
 
-プラグインの開発版バージョンは `0.1.6-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
+プラグインの開発版バージョンは `0.1.7-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
 
 1. Composer の本番依存関係を含む `manga-shelf-<tag>.zip` を生成する
 2. ZIP 内のプラグインバージョンをタグ名に置換する
@@ -87,8 +91,8 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 最初のリリースは次のように作成できます。
 
 ```bash
-git tag 0.1.6
-git push origin 0.1.6
+git tag 0.1.7
+git push origin 0.1.7
 ```
 
-GitHub Release が公開されると、`0.1.6-dev` をインストールした WordPress の管理画面に `0.1.6` の更新通知が表示され、Release に添付された ZIP から更新できます。
+GitHub Release が公開されると、`0.1.7-dev` をインストールした WordPress の管理画面に `0.1.7` の更新通知が表示され、Release に添付された ZIP から更新できます。

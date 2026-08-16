@@ -20,6 +20,7 @@ delete_option( 'manga_shelf_schema_version' );
 delete_option( 'manga_shelf_rakuten_application_id' );
 delete_option( 'manga_shelf_rakuten_access_key' );
 delete_option( 'manga_shelf_rakuten_affiliate_id' );
+delete_option( 'manga_shelf_amazon_tracking_id' );
 
 $legacy_cover_ids = get_posts(
 	array(
