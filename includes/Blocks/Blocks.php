@@ -53,6 +53,12 @@ final class Blocks {
 			MANGA_SHELF_VERSION
 		);
 		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/cover-image' );
+		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-cover' );
+		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-isbn' );
 		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-list' );
+		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-number' );
+		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-purchase-link' );
+		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-release-date' );
+		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-title' );
 	}
 }

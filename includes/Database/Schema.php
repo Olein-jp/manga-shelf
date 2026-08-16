@@ -13,7 +13,7 @@ use MangaShelf\Content\PostType;
  * Installs and upgrades plugin tables.
  */
 final class Schema {
-	const VERSION = '3';
+	const VERSION = '4';
 
 	/**
 	 * Register upgrade checks.
@@ -68,6 +68,7 @@ final class Schema {
 			release_date_precision varchar(20) NOT NULL DEFAULT 'unknown',
 			rakuten_item_code varchar(100) NOT NULL DEFAULT '',
 			rakuten_product_url text NOT NULL,
+			rakuten_image_url text NOT NULL,
 			source varchar(30) NOT NULL DEFAULT 'manual',
 			status varchar(30) NOT NULL DEFAULT 'published',
 			discovered_at datetime NOT NULL,

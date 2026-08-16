@@ -41,12 +41,6 @@ final class PostType {
 				'has_archive'  => true,
 				'rewrite'      => array( 'slug' => 'manga' ),
 				'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields' ),
-				'template'     => array(
-					array( 'manga-shelf/cover-image' ),
-					array( 'core/post-title' ),
-					array( 'core/post-content' ),
-					array( 'manga-shelf/volume-list' ),
-				),
 			)
 		);
 	}

@@ -7,20 +7,22 @@
 }
 
 .manga-shelf-volume-list__item {
-	align-items: baseline;
 	border-bottom: 1px solid currentColor;
-	display: grid;
-	gap: 0.5rem 1rem;
-	grid-template-columns: minmax(0, 1fr) auto auto;
 	padding-block: 0.75rem;
 }
 
-.manga-shelf-volume-list__title {
+.manga-shelf-volume-title {
 	font-weight: 600;
 }
 
-@media (max-width: 600px) {
-	.manga-shelf-volume-list__item {
-		grid-template-columns: 1fr;
-	}
+.manga-shelf-volume-cover img {
+	display: block;
+	height: auto;
+	max-width: 100%;
+}
+
+.manga-shelf-volume-field-placeholder {
+	border: 1px dashed currentColor;
+	opacity: 0.7;
+	padding: 0.5rem;
 }

@@ -7,9 +7,9 @@
 
 namespace MangaShelf\Admin;
 
-use MangaShelf\Database\Volumes;
 use MangaShelf\Integrations\Rakuten\Attribution;
 use MangaShelf\Integrations\Rakuten\Client;
+use MangaShelf\Integrations\Rakuten\VolumeSync;
 
 /**
  * Searches Rakuten Books and imports a selected manga.
@@ -162,18 +162,10 @@ final class MangaImport {
 			wp_set_object_terms( $post_id, array_filter( array_map( 'trim', preg_split( '/[\/,、]/u', $item['author'] ) ) ), 'manga_author' );
 		}
 
-		$volume_items = ( new Client() )->search_books( $item['series_title'] );
-		if ( is_wp_error( $volume_items ) ) {
-			$volume_items = array( $item );
-		}
-		$imported = 0;
-		foreach ( $volume_items as $volume ) {
-			if ( $this->is_same_series( $item['series_title'], $volume['series_title'] ) && $this->is_regular_edition( $volume['title'] ) ) {
-				$imported += (int) (bool) $this->save_volume( $post_id, $volume );
-			}
-		}
-		if ( 0 === $imported ) {
-			$this->save_volume( $post_id, $item );
+		$sync     = new VolumeSync();
+		$imported = $sync->sync( $post_id, $item['series_title'] );
+		if ( is_wp_error( $imported ) || 0 === $imported ) {
+			$sync->save( $post_id, $item );
 		}
 
 		if ( $item['image_url'] && $item['product_url'] ) {
@@ -201,52 +193,5 @@ final class MangaImport {
 		$item['product_url']   = isset( $raw['product_url'] ) ? esc_url_raw( $raw['product_url'] ) : '';
 		$item['image_url']     = isset( $raw['image_url'] ) ? esc_url_raw( $raw['image_url'] ) : '';
 		return $item;
-	}
-
-	/**
-	 * Compare normalized series titles.
-	 *
-	 * @param string $expected Expected title.
-	 * @param string $actual   Actual title.
-	 * @return bool
-	 */
-	private function is_same_series( $expected, $actual ) {
-		$normalize = static function ( $value ) {
-			return strtolower( preg_replace( '/[\s　・:：\-]/u', '', $value ) );
-		};
-		return $normalize( $expected ) === $normalize( $actual );
-	}
-
-	/**
-	 * Exclude non-standard editions in the MVP.
-	 *
-	 * @param string $title Book title.
-	 * @return bool
-	 */
-	private function is_regular_edition( $title ) {
-		return ! preg_match( '/(特装版|限定版|文庫版|完全版|新装版|電子版|Kindle)/iu', $title );
-	}
-
-	/**
-	 * Persist one volume.
-	 *
-	 * @param int   $post_id Manga post ID.
-	 * @param array $item    Volume data.
-	 * @return int|false
-	 */
-	private function save_volume( $post_id, array $item ) {
-		return ( new Volumes() )->upsert(
-			array(
-				'manga_id'               => $post_id,
-				'volume_number'          => $item['volume_number'],
-				'isbn13'                 => $item['isbn13'],
-				'title'                  => $item['title'],
-				'release_date'           => $item['release_date'],
-				'release_date_precision' => $item['date_precision'],
-				'rakuten_item_code'      => $item['item_code'],
-				'rakuten_product_url'    => $item['product_url'],
-				'source'                 => 'rakuten',
-			)
-		);
 	}
 }

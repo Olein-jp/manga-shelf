@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "manga-shelf/volume-cover",
+  "version": "0.1.6",
+  "title": "漫画：各巻の書影",
+  "category": "widgets",
+  "icon": "format-image",
+  "description": "繰り返し表示中の巻の書影です。",
+  "textdomain": "manga-shelf",
+  "ancestor": [ "manga-shelf/volume-list" ],
+  "usesContext": [ "mangaShelf/volume" ],
+  "attributes": {
+    "width": { "type": "number", "default": 120 }
+  },
+  "supports": {
+    "spacing": { "margin": true, "padding": true }
+  },
+  "editorScript": "manga-shelf-volume-list-editor",
+  "style": "manga-shelf-volume-list",
+  "render": "file:./render.php"
+}

@@ -2,11 +2,11 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "manga-shelf/volume-list",
-  "version": "0.1.0",
+  "version": "0.1.6",
   "title": "漫画：巻一覧",
   "category": "widgets",
   "icon": "book-alt",
-  "description": "この作品に登録された既刊を一覧表示します。",
+  "description": "1巻分のレイアウトを自由に作り、登録済みの各巻へ繰り返して表示します。",
   "textdomain": "manga-shelf",
   "usesContext": [ "postId", "postType" ],
   "attributes": {

@@ -39,6 +39,7 @@ final class Volumes {
 			'release_date_precision' => 'unknown',
 			'rakuten_item_code'      => '',
 			'rakuten_product_url'    => '',
+			'rakuten_image_url'      => '',
 			'source'                 => 'manual',
 			'status'                 => 'published',
 		);

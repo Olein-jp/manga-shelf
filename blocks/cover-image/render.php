@@ -5,14 +5,11 @@
  * @package MangaShelf
  */
 
-$manga_id           = isset( $block->context['postId'] ) ? (int) $block->context['postId'] : get_the_ID();
-$image_url          = get_post_meta( $manga_id, 'manga_cover_image_url', true );
-$product_url        = get_post_meta( $manga_id, 'manga_cover_product_url', true );
-$image_host         = strtolower( (string) wp_parse_url( $image_url, PHP_URL_HOST ) );
-$product_host       = strtolower( (string) wp_parse_url( $product_url, PHP_URL_HOST ) );
-$is_rakuten_product = 'rakuten.co.jp' === $product_host || '.rakuten.co.jp' === substr( $product_host, -14 );
+$manga_id    = isset( $block->context['postId'] ) ? (int) $block->context['postId'] : get_the_ID();
+$image_url   = get_post_meta( $manga_id, 'manga_cover_image_url', true );
+$product_url = get_post_meta( $manga_id, 'manga_cover_product_url', true );
 
-if ( 'thumbnail.image.rakuten.co.jp' !== $image_host || ! $is_rakuten_product ) {
+if ( ! \MangaShelf\Integrations\Rakuten\UrlPolicy::is_image( $image_url ) || ! \MangaShelf\Integrations\Rakuten\UrlPolicy::is_product( $product_url ) ) {
 	return;
 }
 

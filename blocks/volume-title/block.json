@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "manga-shelf/volume-title",
+  "version": "0.1.6",
+  "title": "漫画：各巻のタイトル",
+  "category": "widgets",
+  "icon": "heading",
+  "description": "繰り返し表示中の巻のタイトルです。",
+  "textdomain": "manga-shelf",
+  "ancestor": [ "manga-shelf/volume-list" ],
+  "usesContext": [ "mangaShelf/volume" ],
+  "attributes": {
+    "level": { "type": "number", "default": 3 },
+    "linkToProduct": { "type": "boolean", "default": false }
+  },
+  "supports": {
+    "color": { "text": true },
+    "spacing": { "margin": true, "padding": true },
+    "typography": { "fontSize": true, "lineHeight": true }
+  },
+  "editorScript": "manga-shelf-volume-list-editor",
+  "render": "file:./render.php"
+}

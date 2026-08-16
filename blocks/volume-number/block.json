@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "manga-shelf/volume-number",
+  "version": "0.1.6",
+  "title": "漫画：各巻の巻数",
+  "category": "widgets",
+  "icon": "editor-ol",
+  "description": "繰り返し表示中の巻数です。",
+  "textdomain": "manga-shelf",
+  "ancestor": [ "manga-shelf/volume-list" ],
+  "usesContext": [ "mangaShelf/volume" ],
+  "attributes": {
+    "prefix": { "type": "string", "default": "第" },
+    "suffix": { "type": "string", "default": "巻" }
+  },
+  "supports": {
+    "color": { "text": true },
+    "spacing": { "margin": true, "padding": true },
+    "typography": { "fontSize": true, "lineHeight": true }
+  },
+  "editorScript": "manga-shelf-volume-list-editor",
+  "render": "file:./render.php"
+}

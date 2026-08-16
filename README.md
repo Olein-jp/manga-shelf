@@ -14,7 +14,8 @@
 - 楽天Web Servicesの公式クレジットを対象画面に表示
 - 最新巻・最新巻発売日の Block Bindings Source
 - 出版社・評価・最新巻・発売日の Core Block Variation
-- 動的な「漫画：巻一覧」ブロック
+- 1巻分のレイアウトを自由に構成できる動的な「漫画：巻一覧」ブロック
+- 各巻の書影、タイトル、巻数、発売日、ISBN、楽天リンク用ブロック
 - 作品詳細パターンと個別作品・作品一覧のプラグインテンプレート
 
 定期新刊監視、Action Scheduler、Amazon連携、フロント側検索・絞り込み、一般ユーザー用ライブラリは v0.2 以降の対象です。
@@ -77,7 +78,7 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 
 ## リリース
 
-プラグインの開発版バージョンは `0.1.5-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
+プラグインの開発版バージョンは `0.1.6-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
 
 1. Composer の本番依存関係を含む `manga-shelf-<tag>.zip` を生成する
 2. ZIP 内のプラグインバージョンをタグ名に置換する
@@ -86,8 +87,8 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 最初のリリースは次のように作成できます。
 
 ```bash
-git tag 0.1.5
-git push origin 0.1.5
+git tag 0.1.6
+git push origin 0.1.6
 ```
 
-GitHub Release が公開されると、`0.1.5-dev` をインストールした WordPress の管理画面に `0.1.5` の更新通知が表示され、Release に添付された ZIP から更新できます。
+GitHub Release が公開されると、`0.1.6-dev` をインストールした WordPress の管理画面に `0.1.6` の更新通知が表示され、Release に添付された ZIP から更新できます。

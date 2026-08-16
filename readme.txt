@@ -3,7 +3,7 @@ Contributors: olein
 Tags: manga, books, library, block-editor
 Requires at least: 6.7
 Requires PHP: 7.4
-Stable tag: 0.1.5
+Stable tag: 0.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,12 @@ v0.1 は紙の通常版コミックスを対象とします。定期新刊監視
 既定では保持されます。`MANGA_SHELF_DELETE_DATA` を `true` に設定した場合のみ、アンインストール時に作品、巻テーブル、設定を削除します。
 
 == Changelog ==
+
+= 0.1.6 =
+
+* 巻一覧の1巻分レイアウトをブロックエディターで自由に編集できるように変更。
+* 各巻の書影、タイトル、巻数、発売日、ISBN、楽天リンク用ブロックを追加。
+* 既存作品の巻情報と書影URLを楽天から再取得する機能を追加。
 
 = 0.1.5 =
 

@@ -8,9 +8,10 @@
 namespace MangaShelf\Admin;
 
 use MangaShelf\Database\Volumes;
+use MangaShelf\Integrations\Rakuten\VolumeSync;
 
 /**
- * Provides an explicit two-step migration for imported cover attachments.
+ * Provides explicit migration tools for imported Rakuten cover data.
  */
 final class CoverMigration {
 	const LEGACY_ATTACHMENT_META = '_manga_shelf_legacy_cover';
@@ -24,6 +25,7 @@ final class CoverMigration {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
 		add_action( 'admin_post_manga_shelf_migrate_covers', array( $this, 'migrate' ) );
 		add_action( 'admin_post_manga_shelf_delete_legacy_covers', array( $this, 'delete_legacy_covers' ) );
+		add_action( 'admin_post_manga_shelf_refresh_volumes', array( $this, 'refresh_volumes' ) );
 	}
 
 	/**
@@ -54,9 +56,11 @@ final class CoverMigration {
 
 		$candidates = $this->migration_candidates();
 		$legacy     = $this->legacy_attachment_ids();
+		$missing    = $this->missing_volume_cover_manga_ids();
 		$migrated   = isset( $_GET['manga_shelf_migrated'] ) ? absint( wp_unslash( $_GET['manga_shelf_migrated'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only status after a nonce-protected action.
 		$deleted    = isset( $_GET['manga_shelf_deleted'] ) ? absint( wp_unslash( $_GET['manga_shelf_deleted'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only status after a nonce-protected action.
 		$error      = isset( $_GET['manga_shelf_error'] ) ? sanitize_key( wp_unslash( $_GET['manga_shelf_error'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only status after a nonce-protected action.
+		$refreshed  = isset( $_GET['manga_shelf_refreshed'] ) ? absint( wp_unslash( $_GET['manga_shelf_refreshed'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only status after a nonce-protected action.
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( '楽天書影の安全な表示への移行', 'manga-shelf' ); ?></h1>
@@ -68,6 +72,12 @@ final class CoverMigration {
 			<?php endif; ?>
 			<?php if ( 'confirmation' === $error ) : ?>
 				<div class="notice notice-error"><p><?php esc_html_e( '完全削除を実行するには確認チェックが必要です。', 'manga-shelf' ); ?></p></div>
+			<?php endif; ?>
+			<?php if ( 'refresh' === $error ) : ?>
+				<div class="notice notice-error"><p><?php esc_html_e( '楽天から巻情報を再取得できませんでした。API設定と接続状況を確認してください。', 'manga-shelf' ); ?></p></div>
+			<?php endif; ?>
+			<?php if ( $refreshed ) : ?>
+				<div class="notice notice-success"><p><?php /* translators: %d: number of refreshed volumes. */ echo esc_html( sprintf( __( '%d件の巻情報を更新しました。', 'manga-shelf' ), $refreshed ) ); ?></p></div>
 			<?php endif; ?>
 
 			<p><?php esc_html_e( '以前のバージョンがメディアライブラリへ保存した楽天書影を、楽天の画像URLと商品リンクを使う表示へ切り替えます。最初の操作ではローカルファイルを削除しません。', 'manga-shelf' ); ?></p>
@@ -106,6 +116,31 @@ final class CoverMigration {
 				</form>
 			<?php else : ?>
 				<p><?php esc_html_e( '削除待ちの旧ローカル書影はありません。', 'manga-shelf' ); ?></p>
+			<?php endif; ?>
+
+			<h2><?php esc_html_e( '手順3：各巻の書影を取得する', 'manga-shelf' ); ?></h2>
+			<p><?php esc_html_e( '旧バージョンで登録した巻には書影URLがありません。対象作品ごとに楽天から巻情報を再取得すると、新しい巻一覧レイアウトで各巻の書影を表示できます。', 'manga-shelf' ); ?></p>
+			<?php if ( $missing ) : ?>
+				<table class="widefat striped">
+					<thead><tr><th><?php esc_html_e( '作品', 'manga-shelf' ); ?></th><th><?php esc_html_e( '操作', 'manga-shelf' ); ?></th></tr></thead>
+					<tbody>
+					<?php foreach ( $missing as $manga_id ) : ?>
+						<tr>
+							<td><a href="<?php echo esc_url( get_edit_post_link( $manga_id ) ); ?>"><?php echo esc_html( get_the_title( $manga_id ) ); ?></a></td>
+							<td>
+								<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
+									<input type="hidden" name="action" value="manga_shelf_refresh_volumes">
+									<input type="hidden" name="manga_id" value="<?php echo esc_attr( $manga_id ); ?>">
+									<?php wp_nonce_field( 'manga_shelf_refresh_volumes_' . $manga_id ); ?>
+									<?php submit_button( __( '巻情報を再取得', 'manga-shelf' ), 'secondary', 'submit', false ); ?>
+								</form>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php else : ?>
+				<p><?php esc_html_e( '書影の再取得が必要な作品はありません。', 'manga-shelf' ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php
@@ -154,6 +189,26 @@ final class CoverMigration {
 	}
 
 	/**
+	 * Refresh API fields, including cover URLs, for one manga.
+	 *
+	 * @return void
+	 */
+	public function refresh_volumes() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- authorize() verifies a post-specific nonce below.
+		$manga_id = isset( $_POST['manga_id'] ) ? absint( wp_unslash( $_POST['manga_id'] ) ) : 0;
+		$this->authorize( 'manga_shelf_refresh_volumes_' . $manga_id );
+		if ( 'manga' !== get_post_type( $manga_id ) ) {
+			$this->redirect( array( 'manga_shelf_error' => 'refresh' ) );
+		}
+
+		$result = ( new VolumeSync() )->sync( $manga_id, get_the_title( $manga_id ) );
+		if ( is_wp_error( $result ) || 0 === $result ) {
+			$this->redirect( array( 'manga_shelf_error' => 'refresh' ) );
+		}
+		$this->redirect( array( 'manga_shelf_refreshed' => $result ) );
+	}
+
+	/**
 	 * Resolve safely identifiable legacy imports.
 	 *
 	 * @return array
@@ -199,6 +254,20 @@ final class CoverMigration {
 				'posts_per_page' => -1,
 				'meta_key'       => self::LEGACY_ATTACHMENT_META, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 			)
+		);
+	}
+
+	/**
+	 * Find manga with imported volumes that predate per-volume cover storage.
+	 *
+	 * @return int[]
+	 */
+	private function missing_volume_cover_manga_ids() {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'manga_volumes';
+		return array_map(
+			'intval',
+			$wpdb->get_col( "SELECT DISTINCT manga_id FROM {$table_name} WHERE source = 'rakuten' AND (rakuten_image_url = '' OR rakuten_image_url IS NULL) ORDER BY manga_id ASC" ) // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		);
 	}
 
