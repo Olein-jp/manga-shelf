@@ -8,6 +8,7 @@
 namespace MangaShelf\Admin;
 
 use MangaShelf\Database\Volumes;
+use MangaShelf\Integrations\Rakuten\Attribution;
 use MangaShelf\Integrations\Rakuten\Client;
 
 /**
@@ -87,9 +88,9 @@ final class MangaImport {
 						<tr>
 							<td>
 							<?php
-							if ( $item['image_url'] ) :
+							if ( $item['image_url'] && $item['product_url'] ) :
 								?>
-								<img alt="" height="100" src="<?php echo esc_url( $item['image_url'] ); ?>"><?php endif; ?></td>
+							<a href="<?php echo esc_url( $item['product_url'] ); ?>" rel="nofollow sponsored noopener" target="_blank"><img alt="" height="100" src="<?php echo esc_url( $item['image_url'] ); ?>"></a><?php endif; ?></td>
 							<td><strong><?php echo esc_html( $item['title'] ); ?></strong><br><?php echo esc_html( $item['author'] ); ?> / <?php echo esc_html( $item['publisher'] ); ?><br>ISBN: <?php echo esc_html( $item['isbn13'] ); ?></td>
 							<td><?php echo esc_html( $item['release_date'] ); ?></td>
 							<td><?php $this->render_import_form( $item ); ?></td>
@@ -97,6 +98,7 @@ final class MangaImport {
 					<?php endforeach; ?>
 					</tbody>
 				</table>
+				<p><?php Attribution::render_once(); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php
@@ -174,8 +176,9 @@ final class MangaImport {
 			$this->save_volume( $post_id, $item );
 		}
 
-		if ( $item['image_url'] ) {
-			$this->set_featured_image( $post_id, $item['image_url'], $item['series_title'] );
+		if ( $item['image_url'] && $item['product_url'] ) {
+			update_post_meta( $post_id, 'manga_cover_image_url', $item['image_url'] );
+			update_post_meta( $post_id, 'manga_cover_product_url', $item['product_url'] );
 		}
 
 		wp_safe_redirect( get_edit_post_link( $post_id, 'url' ) );
@@ -245,23 +248,5 @@ final class MangaImport {
 				'source'                 => 'rakuten',
 			)
 		);
-	}
-
-	/**
-	 * Download the selected cover into the media library.
-	 *
-	 * @param int    $post_id  Manga post ID.
-	 * @param string $image_url Image URL.
-	 * @param string $title     Image description.
-	 * @return void
-	 */
-	private function set_featured_image( $post_id, $image_url, $title ) {
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/media.php';
-		require_once ABSPATH . 'wp-admin/includes/image.php';
-		$attachment_id = media_sideload_image( $image_url, $post_id, $title, 'id' );
-		if ( ! is_wp_error( $attachment_id ) ) {
-			set_post_thumbnail( $post_id, $attachment_id );
-		}
 	}
 }

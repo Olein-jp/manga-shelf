@@ -10,12 +10,18 @@
 - `wp_manga_volumes` 専用テーブルによる巻情報管理
 - 楽天ブックス書籍検索APIの設定・接続確認
 - 楽天の検索結果から作品と取得可能な既刊を下書きとして登録
+- 楽天書影をローカル保存せず、商品リンク付きの外部画像として表示
+- 楽天Web Servicesの公式クレジットを対象画面に表示
 - 最新巻・最新巻発売日の Block Bindings Source
 - 出版社・評価・最新巻・発売日の Core Block Variation
 - 動的な「漫画：巻一覧」ブロック
 - 作品詳細パターンと個別作品・作品一覧のプラグインテンプレート
 
 定期新刊監視、Action Scheduler、Amazon連携、フロント側検索・絞り込み、一般ユーザー用ライブラリは v0.2 以降の対象です。
+
+## 利用者向けマニュアル
+
+初期設定、楽天からの作品登録、ブロックの使い方、`single-manga.html`・`archive-manga.html`の扱い、クラシックテーマでのテンプレート作成方法は、[Manga Shelf 利用マニュアル](docs/user-manual.md)を参照してください。
 
 ## 必要環境
 
@@ -59,6 +65,8 @@ define( 'MANGA_SHELF_RAKUTEN_AFFILIATE_ID', 'your-affiliate-id' );
 
 楽天検索を実行すると、検索語とサイトURLを含むリクエストが楽天Web Serviceへ送信されます。MVPでは「紙の通常版」を基準にし、特装版、限定版、文庫版、完全版、新装版、電子版を既刊一括取込から除外します。判定結果は公開前に確認してください。
 
+0.1.4以前に取り込んだ楽天書影は、更新後に「漫画 → 楽天書影の移行」から外部URL表示へ切り替えられます。動作確認後、移行画面から旧ローカル書影を明示的に削除できます。詳しい手順と画像利用上の注意は利用者向けマニュアルを参照してください。
+
 ## データの削除
 
 通常のアンインストールでは作品・巻・設定を保持します。すべて削除する場合のみ、アンインストール前に次を設定してください。
@@ -69,7 +77,7 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 
 ## リリース
 
-プラグインの開発版バージョンは `0.1.4-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
+プラグインの開発版バージョンは `0.1.5-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
 
 1. Composer の本番依存関係を含む `manga-shelf-<tag>.zip` を生成する
 2. ZIP 内のプラグインバージョンをタグ名に置換する
@@ -78,8 +86,8 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 最初のリリースは次のように作成できます。
 
 ```bash
-git tag 0.1.4
-git push origin 0.1.4
+git tag 0.1.5
+git push origin 0.1.5
 ```
 
-GitHub Release が公開されると、`0.1.4-dev` をインストールした WordPress の管理画面に `0.1.4` の更新通知が表示され、Release に添付された ZIP から更新できます。
+GitHub Release が公開されると、`0.1.5-dev` をインストールした WordPress の管理画面に `0.1.5` の更新通知が表示され、Release に添付された ZIP から更新できます。

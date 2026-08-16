@@ -7,14 +7,16 @@
 
 namespace MangaShelf;
 
-use MangaShelf\Admin\MangaImport;
+use MangaShelf\Admin\CoverMigration;
 use MangaShelf\Admin\MangaDetails;
+use MangaShelf\Admin\MangaImport;
 use MangaShelf\Bindings\Bindings;
 use MangaShelf\Blocks\Blocks;
 use MangaShelf\Content\Meta;
 use MangaShelf\Content\PostType;
 use MangaShelf\Content\Taxonomies;
 use MangaShelf\Database\Schema;
+use MangaShelf\Integrations\Rakuten\Attribution;
 use MangaShelf\Integrations\Rakuten\Settings;
 use MangaShelf\Templates\Templates;
 
@@ -53,8 +55,10 @@ final class Plugin {
 		( new Meta() )->register();
 		( new Schema() )->register();
 		( new Settings() )->register();
+		( new Attribution() )->register();
 		( new MangaDetails() )->register();
 		( new MangaImport() )->register();
+		( new CoverMigration() )->register();
 		( new Bindings() )->register();
 		( new Blocks() )->register();
 		( new Templates() )->register();

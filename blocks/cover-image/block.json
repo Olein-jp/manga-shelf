@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "manga-shelf/cover-image",
+  "version": "0.1.5",
+  "title": "漫画：楽天書影",
+  "category": "media",
+  "icon": "format-image",
+  "description": "楽天の画像URLを、商品ページへのリンク付きで表示します。",
+  "textdomain": "manga-shelf",
+  "usesContext": [ "postId", "postType" ],
+  "supports": {
+    "align": [ "wide", "full" ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "editorScript": "manga-shelf-cover-image-editor",
+  "style": "manga-shelf-cover-image",
+  "render": "file:./render.php"
+}

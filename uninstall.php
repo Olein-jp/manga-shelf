@@ -21,6 +21,19 @@ delete_option( 'manga_shelf_rakuten_application_id' );
 delete_option( 'manga_shelf_rakuten_access_key' );
 delete_option( 'manga_shelf_rakuten_affiliate_id' );
 
+$legacy_cover_ids = get_posts(
+	array(
+		'post_type'      => 'attachment',
+		'post_status'    => 'any',
+		'fields'         => 'ids',
+		'posts_per_page' => -1,
+		'meta_key'       => '_manga_shelf_legacy_cover', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+	)
+);
+foreach ( $legacy_cover_ids as $legacy_cover_id ) {
+	wp_delete_attachment( $legacy_cover_id, true );
+}
+
 $manga_ids = get_posts(
 	array(
 		'post_type'      => 'manga',

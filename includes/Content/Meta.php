@@ -27,33 +27,41 @@ final class Meta {
 	 */
 	public function register_meta() {
 		$fields = array(
-			'manga_reading_status'   => array(
+			'manga_reading_status'    => array(
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_key',
 			),
-			'manga_rating'           => array(
+			'manga_rating'            => array(
 				'type'              => 'number',
 				'sanitize_callback' => array( $this, 'sanitize_rating' ),
 			),
-			'manga_official_url'     => array(
+			'manga_official_url'      => array(
 				'type'              => 'string',
 				'sanitize_callback' => 'esc_url_raw',
 			),
-			'manga_sample_url'       => array(
+			'manga_sample_url'        => array(
 				'type'              => 'string',
 				'sanitize_callback' => 'esc_url_raw',
 			),
-			'manga_publisher'        => array(
+			'manga_publisher'         => array(
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 			),
-			'manga_label'            => array(
+			'manga_label'             => array(
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 			),
-			'manga_tracking_enabled' => array(
+			'manga_tracking_enabled'  => array(
 				'type'              => 'boolean',
 				'sanitize_callback' => 'rest_sanitize_boolean',
+			),
+			'manga_cover_image_url'   => array(
+				'type'              => 'string',
+				'sanitize_callback' => 'esc_url_raw',
+			),
+			'manga_cover_product_url' => array(
+				'type'              => 'string',
+				'sanitize_callback' => 'esc_url_raw',
 			),
 		);
 

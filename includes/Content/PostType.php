@@ -42,7 +42,7 @@ final class PostType {
 				'rewrite'      => array( 'slug' => 'manga' ),
 				'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields' ),
 				'template'     => array(
-					array( 'core/post-featured-image' ),
+					array( 'manga-shelf/cover-image' ),
 					array( 'core/post-title' ),
 					array( 'core/post-content' ),
 					array( 'manga-shelf/volume-list' ),

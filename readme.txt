@@ -3,7 +3,7 @@ Contributors: olein
 Tags: manga, books, library, block-editor
 Requires at least: 6.7
 Requires PHP: 7.4
-Stable tag: 0.1.4
+Stable tag: 0.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,12 @@ v0.1 は紙の通常版コミックスを対象とします。定期新刊監視
 既定では保持されます。`MANGA_SHELF_DELETE_DATA` を `true` に設定した場合のみ、アンインストール時に作品、巻テーブル、設定を削除します。
 
 == Changelog ==
+
+= 0.1.5 =
+
+* 楽天書影のローカル保存を廃止し、商品リンク付きの外部画像として表示。
+* 漫画ページへ楽天Web Serviceの公式クレジットを追加。
+* 旧ローカル書影を確認しながら移行・削除する管理画面を追加。
 
 = 0.1.4 =
 

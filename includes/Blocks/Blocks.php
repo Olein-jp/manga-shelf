@@ -27,6 +27,19 @@ final class Blocks {
 	 */
 	public function register_blocks() {
 		wp_register_script(
+			'manga-shelf-cover-image-editor',
+			MANGA_SHELF_URL . 'blocks/cover-image/index.js',
+			array( 'wp-blocks', 'wp-components', 'wp-element', 'wp-i18n', 'wp-block-editor' ),
+			MANGA_SHELF_VERSION,
+			true
+		);
+		wp_register_style(
+			'manga-shelf-cover-image',
+			MANGA_SHELF_URL . 'blocks/cover-image/style.css',
+			array(),
+			MANGA_SHELF_VERSION
+		);
+		wp_register_script(
 			'manga-shelf-volume-list-editor',
 			MANGA_SHELF_URL . 'blocks/volume-list/index.js',
 			array( 'wp-blocks', 'wp-components', 'wp-element', 'wp-i18n', 'wp-block-editor' ),
@@ -39,6 +52,7 @@ final class Blocks {
 			array(),
 			MANGA_SHELF_VERSION
 		);
+		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/cover-image' );
 		register_block_type_from_metadata( MANGA_SHELF_PATH . 'blocks/volume-list' );
 	}
 }
