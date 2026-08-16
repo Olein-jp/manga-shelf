@@ -1,6 +1,6 @@
 {
   "name": "manga-shelf",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Development environment for the Manga Shelf WordPress plugin.",
   "scripts": {

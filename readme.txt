@@ -3,7 +3,7 @@ Contributors: olein
 Tags: manga, books, library, block-editor
 Requires at least: 6.7
 Requires PHP: 7.4
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,11 @@ v0.1 は紙の通常版コミックスを対象とします。定期新刊監視
 既定では保持されます。`MANGA_SHELF_DELETE_DATA` を `true` に設定した場合のみ、アンインストール時に作品、巻テーブル、設定を削除します。
 
 == Changelog ==
+
+= 0.1.2 =
+
+* Access Keyをクエリパラメータとして送信し、現行の楽天Web Service認証方式に対応。
+* 現行APIのエラー応答から詳細メッセージを表示できるよう改善。
 
 = 0.1.1 =
 

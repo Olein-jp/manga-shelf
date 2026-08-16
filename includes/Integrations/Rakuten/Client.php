@@ -35,6 +35,7 @@ final class Client {
 
 		$args = array(
 			'applicationId' => $application_id,
+			'accessKey'     => $access_key,
 			'format'        => 'json',
 			'formatVersion' => 2,
 			'title'         => sanitize_text_field( $title ),
@@ -52,9 +53,6 @@ final class Client {
 			array(
 				'timeout'    => 15,
 				'user-agent' => 'Manga Shelf/' . MANGA_SHELF_VERSION . '; ' . home_url( '/' ),
-				'headers'    => array(
-					'accessKey' => $access_key,
-				),
 			)
 		);
 		if ( is_wp_error( $response ) ) {
@@ -62,7 +60,7 @@ final class Client {
 		}
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			$payload     = json_decode( wp_remote_retrieve_body( $response ), true );
-			$description = is_array( $payload ) && ! empty( $payload['error_description'] ) ? sanitize_text_field( $payload['error_description'] ) : '';
+			$description = $this->error_description( $payload );
 			if ( $description ) {
 				/* translators: 1: HTTP status code, 2: API error description. */
 				return new WP_Error( 'rakuten_http_error', sprintf( __( '楽天APIがHTTP %1$dを返しました：%2$s', 'manga-shelf' ), wp_remote_retrieve_response_code( $response ), $description ) );
@@ -77,6 +75,28 @@ final class Client {
 		}
 
 		return array_map( array( $this, 'normalize_item' ), $payload['Items'] );
+	}
+
+	/**
+	 * Extract a safe message from current and legacy API error responses.
+	 *
+	 * @param mixed $payload Decoded response body.
+	 * @return string
+	 */
+	private function error_description( $payload ) {
+		if ( ! is_array( $payload ) ) {
+			return '';
+		}
+
+		if ( ! empty( $payload['errors']['errorMessage'] ) ) {
+			return sanitize_text_field( $payload['errors']['errorMessage'] );
+		}
+
+		if ( ! empty( $payload['error_description'] ) ) {
+			return sanitize_text_field( $payload['error_description'] );
+		}
+
+		return '';
 	}
 
 	/**
