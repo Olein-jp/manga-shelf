@@ -3,7 +3,7 @@ Contributors: olein
 Tags: manga, books, library, block-editor
 Requires at least: 6.7
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ v0.1 は紙の通常版コミックスを対象とします。定期新刊監視
 == Installation ==
 
 1. プラグインをアップロードして有効化します。
-2. 「漫画 → 楽天API設定」で楽天Web ServiceのアプリケーションIDを設定します。
+2. 「漫画 → 楽天API設定」で楽天Web ServiceのアプリケーションIDとAccess Keyを設定します。
 3. 「漫画 → 楽天から追加」で作品を検索・登録します。
 
 == Frequently Asked Questions ==
@@ -29,6 +29,11 @@ v0.1 は紙の通常版コミックスを対象とします。定期新刊監視
 既定では保持されます。`MANGA_SHELF_DELETE_DATA` を `true` に設定した場合のみ、アンインストール時に作品、巻テーブル、設定を削除します。
 
 == Changelog ==
+
+= 0.1.1 =
+
+* 楽天Web Serviceの必須Access Keyに対応。
+* 現行APIエンドポイントへ更新し、APIエラーの詳細表示を改善。
 
 = 0.1.0 =
 

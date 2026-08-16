@@ -44,7 +44,7 @@ npm run env:stop
 ## 使い方
 
 1. WordPress管理画面で Manga Shelf を有効化します。
-2. 「漫画 → 楽天API設定」で楽天Web ServiceのアプリケーションIDを保存します。
+2. 「漫画 → 楽天API設定」で楽天Web ServiceのアプリケーションIDとAccess Keyを保存します。
 3. 「接続を確認」でAPIとの疎通を確認します。
 4. 「漫画 → 楽天から追加」で作品名を検索し、紙の通常版コミックスを選びます。
 5. 作成された下書きで感想、読書状態、評価などを編集して公開します。
@@ -53,6 +53,7 @@ npm run env:stop
 
 ```php
 define( 'MANGA_SHELF_RAKUTEN_APPLICATION_ID', 'your-application-id' );
+define( 'MANGA_SHELF_RAKUTEN_ACCESS_KEY', 'your-access-key' );
 define( 'MANGA_SHELF_RAKUTEN_AFFILIATE_ID', 'your-affiliate-id' );
 ```
 
@@ -68,7 +69,7 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 
 ## リリース
 
-プラグインの開発版バージョンは `0.1.0-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
+プラグインの開発版バージョンは `0.1.1-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
 
 1. Composer の本番依存関係を含む `manga-shelf-<tag>.zip` を生成する
 2. ZIP 内のプラグインバージョンをタグ名に置換する
@@ -77,8 +78,8 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 最初のリリースは次のように作成できます。
 
 ```bash
-git tag 0.1.0
-git push origin 0.1.0
+git tag 0.1.1
+git push origin 0.1.1
 ```
 
-GitHub Release が公開されると、`0.1.0-dev` をインストールした WordPress の管理画面に `0.1.0` の更新通知が表示され、Release に添付された ZIP から更新できます。
+GitHub Release が公開されると、`0.1.1-dev` をインストールした WordPress の管理画面に `0.1.1` の更新通知が表示され、Release に添付された ZIP から更新できます。

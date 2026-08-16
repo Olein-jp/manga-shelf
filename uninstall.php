@@ -18,6 +18,7 @@ global $wpdb;
 $wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'manga_volumes' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
 delete_option( 'manga_shelf_schema_version' );
 delete_option( 'manga_shelf_rakuten_application_id' );
+delete_option( 'manga_shelf_rakuten_access_key' );
 delete_option( 'manga_shelf_rakuten_affiliate_id' );
 
 $manga_ids = get_posts(

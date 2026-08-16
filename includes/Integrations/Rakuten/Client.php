@@ -13,7 +13,7 @@ use WP_Error;
  * Retrieves book records from Rakuten Web Service.
  */
 final class Client {
-	const ENDPOINT = 'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404';
+	const ENDPOINT = 'https://openapi.rakuten.co.jp/services/api/BooksBook/Search/20170404';
 
 	/**
 	 * Search paper books by title.
@@ -27,6 +27,10 @@ final class Client {
 		$application_id = Settings::application_id();
 		if ( ! $application_id ) {
 			return new WP_Error( 'missing_application_id', __( '楽天アプリケーションIDを設定してください。', 'manga-shelf' ) );
+		}
+		$access_key = Settings::access_key();
+		if ( ! $access_key ) {
+			return new WP_Error( 'missing_access_key', __( '楽天Access Keyを設定してください。', 'manga-shelf' ) );
 		}
 
 		$args = array(
@@ -48,12 +52,21 @@ final class Client {
 			array(
 				'timeout'    => 15,
 				'user-agent' => 'Manga Shelf/' . MANGA_SHELF_VERSION . '; ' . home_url( '/' ),
+				'headers'    => array(
+					'accessKey' => $access_key,
+				),
 			)
 		);
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			$payload     = json_decode( wp_remote_retrieve_body( $response ), true );
+			$description = is_array( $payload ) && ! empty( $payload['error_description'] ) ? sanitize_text_field( $payload['error_description'] ) : '';
+			if ( $description ) {
+				/* translators: 1: HTTP status code, 2: API error description. */
+				return new WP_Error( 'rakuten_http_error', sprintf( __( '楽天APIがHTTP %1$dを返しました：%2$s', 'manga-shelf' ), wp_remote_retrieve_response_code( $response ), $description ) );
+			}
 			/* translators: %d: HTTP status code. */
 			return new WP_Error( 'rakuten_http_error', sprintf( __( '楽天APIがHTTP %dを返しました。', 'manga-shelf' ), wp_remote_retrieve_response_code( $response ) ) );
 		}

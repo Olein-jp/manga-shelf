@@ -12,6 +12,7 @@ namespace MangaShelf\Integrations\Rakuten;
  */
 final class Settings {
 	const APPLICATION_ID_OPTION = 'manga_shelf_rakuten_application_id';
+	const ACCESS_KEY_OPTION     = 'manga_shelf_rakuten_access_key';
 	const AFFILIATE_ID_OPTION   = 'manga_shelf_rakuten_affiliate_id';
 
 	/**
@@ -31,8 +32,9 @@ final class Settings {
 	 * @return void
 	 */
 	public function register_settings() {
-		register_setting( 'manga_shelf_rakuten', self::APPLICATION_ID_OPTION, array( 'sanitize_callback' => 'sanitize_text_field' ) );
-		register_setting( 'manga_shelf_rakuten', self::AFFILIATE_ID_OPTION, array( 'sanitize_callback' => 'sanitize_text_field' ) );
+		register_setting( 'manga_shelf_rakuten', self::APPLICATION_ID_OPTION, array( 'sanitize_callback' => array( $this, 'sanitize_credential' ) ) );
+		register_setting( 'manga_shelf_rakuten', self::ACCESS_KEY_OPTION, array( 'sanitize_callback' => array( $this, 'sanitize_credential' ) ) );
+		register_setting( 'manga_shelf_rakuten', self::AFFILIATE_ID_OPTION, array( 'sanitize_callback' => array( $this, 'sanitize_credential' ) ) );
 	}
 
 	/**
@@ -64,10 +66,14 @@ final class Settings {
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Manga Shelf 楽天API設定', 'manga-shelf' ); ?></h1>
 			<?php settings_errors( 'manga_shelf_rakuten' ); ?>
-			<p><?php esc_html_e( '定数 MANGA_SHELF_RAKUTEN_APPLICATION_ID を wp-config.php に設定すると、保存値より優先されます。', 'manga-shelf' ); ?></p>
+			<p><?php esc_html_e( '楽天Web ServiceのアプリケーションIDとAccess Keyが必要です。wp-config.phpの定数を設定すると、保存値より優先されます。', 'manga-shelf' ); ?></p>
 			<form action="options.php" method="post">
 				<?php settings_fields( 'manga_shelf_rakuten' ); ?>
 				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><label for="manga-shelf-access-key"><?php esc_html_e( 'Access Key', 'manga-shelf' ); ?></label></th>
+						<td><input class="regular-text" id="manga-shelf-access-key" name="<?php echo esc_attr( self::ACCESS_KEY_OPTION ); ?>" type="password" value="<?php echo esc_attr( get_option( self::ACCESS_KEY_OPTION, '' ) ); ?>" autocomplete="off"></td>
+					</tr>
 					<tr>
 						<th scope="row"><label for="manga-shelf-application-id"><?php esc_html_e( 'アプリケーションID', 'manga-shelf' ); ?></label></th>
 						<td><input class="regular-text" id="manga-shelf-application-id" name="<?php echo esc_attr( self::APPLICATION_ID_OPTION ); ?>" type="password" value="<?php echo esc_attr( get_option( self::APPLICATION_ID_OPTION, '' ) ); ?>" autocomplete="off"></td>
@@ -114,7 +120,18 @@ final class Settings {
 	 * @return string
 	 */
 	public static function application_id() {
-		return defined( 'MANGA_SHELF_RAKUTEN_APPLICATION_ID' ) ? (string) MANGA_SHELF_RAKUTEN_APPLICATION_ID : (string) get_option( self::APPLICATION_ID_OPTION, '' );
+		$value = defined( 'MANGA_SHELF_RAKUTEN_APPLICATION_ID' ) ? (string) MANGA_SHELF_RAKUTEN_APPLICATION_ID : (string) get_option( self::APPLICATION_ID_OPTION, '' );
+		return trim( $value );
+	}
+
+	/**
+	 * Resolve the access key.
+	 *
+	 * @return string
+	 */
+	public static function access_key() {
+		$value = defined( 'MANGA_SHELF_RAKUTEN_ACCESS_KEY' ) ? (string) MANGA_SHELF_RAKUTEN_ACCESS_KEY : (string) get_option( self::ACCESS_KEY_OPTION, '' );
+		return trim( $value );
 	}
 
 	/**
@@ -123,6 +140,17 @@ final class Settings {
 	 * @return string
 	 */
 	public static function affiliate_id() {
-		return defined( 'MANGA_SHELF_RAKUTEN_AFFILIATE_ID' ) ? (string) MANGA_SHELF_RAKUTEN_AFFILIATE_ID : (string) get_option( self::AFFILIATE_ID_OPTION, '' );
+		$value = defined( 'MANGA_SHELF_RAKUTEN_AFFILIATE_ID' ) ? (string) MANGA_SHELF_RAKUTEN_AFFILIATE_ID : (string) get_option( self::AFFILIATE_ID_OPTION, '' );
+		return trim( $value );
+	}
+
+	/**
+	 * Sanitize a credential without changing valid punctuation.
+	 *
+	 * @param mixed $value Submitted value.
+	 * @return string
+	 */
+	public function sanitize_credential( $value ) {
+		return trim( sanitize_text_field( $value ) );
 	}
 }
