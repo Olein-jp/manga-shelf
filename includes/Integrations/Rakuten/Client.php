@@ -53,6 +53,9 @@ final class Client {
 			array(
 				'timeout'    => 15,
 				'user-agent' => 'Manga Shelf/' . MANGA_SHELF_VERSION . '; ' . home_url( '/' ),
+				'headers'    => array(
+					'Referer' => home_url( '/' ),
+				),
 			)
 		);
 		if ( is_wp_error( $response ) ) {
