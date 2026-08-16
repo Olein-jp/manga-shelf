@@ -61,10 +61,15 @@ final class Settings {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
+		$disclosure = sprintf(
+			/* translators: %s: site name. */
+			__( 'Amazonのアソシエイトとして、%sは適格販売により収入を得ています。', 'manga-shelf' ),
+			get_bloginfo( 'name' )
+		);
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Manga Shelf Amazon設定', 'manga-shelf' ); ?></h1>
-			<p><?php esc_html_e( '各巻のISBNを使ってAmazon.co.jpの書籍検索リンクを作成します。トラッキングIDを設定しない場合は通常のAmazonリンクになります。', 'manga-shelf' ); ?></p>
+			<p><?php esc_html_e( '各巻のISBNを使ってAmazon.co.jpの商品ページへリンクします。商品ページを特定できないISBNは書籍検索へ移動します。トラッキングIDを設定しない場合は通常のAmazonリンクになります。', 'manga-shelf' ); ?></p>
 			<form action="options.php" method="post">
 				<?php settings_fields( 'manga_shelf_amazon' ); ?>
 				<table class="form-table" role="presentation">
@@ -78,7 +83,10 @@ final class Settings {
 				</table>
 				<?php submit_button(); ?>
 			</form>
-			<p><?php esc_html_e( 'アフィリエイトリンクを使う場合は、Amazonアソシエイト・プログラムへの参加と、サイト情報・プライバシーポリシー等への適切な開示も確認してください。', 'manga-shelf' ); ?></p>
+			<div class="notice notice-warning inline">
+				<p><?php esc_html_e( 'トラッキングIDを利用する場合、次の開示文を「このサイトについて」やプライバシーポリシーなど、サイト内の分かりやすい場所へ掲載してください。Manga Shelfは公開画面へ自動出力しません。', 'manga-shelf' ); ?></p>
+				<p><code><?php echo esc_html( $disclosure ); ?></code></p>
+			</div>
 		</div>
 		<?php
 	}

@@ -3,7 +3,7 @@ Contributors: olein
 Tags: manga, books, library, block-editor
 Requires at least: 6.7
 Requires PHP: 7.4
-Stable tag: 0.1.7
+Stable tag: 0.1.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Manga Shelf は、漫画作品を自分の本棚として登録・公開するためのプラグインです。
 楽天ブックス書籍検索APIから作品と既刊を取り込み、巻一覧ブロック、Block Bindings、パターン、プラグインテンプレートで表示できます。
 
-v0.1 は紙の通常版コミックスを対象とします。ISBNによるAmazon.co.jp検索リンクに対応しています。Amazonの商品情報API連携と定期新刊監視は今後のバージョンで追加予定です。
+v0.1 は紙の通常版コミックスを対象とします。ISBNによるAmazon.co.jp商品リンクに対応しています。Amazonの商品情報API連携と定期新刊監視は今後のバージョンで追加予定です。
 
 == Installation ==
 
@@ -30,10 +30,17 @@ v0.1 は紙の通常版コミックスを対象とします。ISBNによるAmazo
 
 == Changelog ==
 
+= 0.1.8 =
+
+* Amazonアソシエイトのサイト開示文を公開画面へ自動出力しないよう変更。
+* 任意の場所へ掲載できるよう、Amazon設定画面に開示文を表示。
+* 変換可能なISBNをAmazonの商品ページへ直接リンクするよう変更。
+* 楽天・Amazon商品リンクを標準の個別ボタン（core/button）のバリエーションとして追加。
+
 = 0.1.7 =
 
 * 各巻のISBNからAmazon.co.jpの書籍検索リンクを生成するブロックを追加。
-* Amazonアソシエイト・トラッキングIDと必要なサイト表記に対応。
+* Amazonアソシエイト・トラッキングIDとリンク単位の広告表記に対応。
 
 = 0.1.6 =
 

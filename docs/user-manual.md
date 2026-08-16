@@ -47,20 +47,22 @@ define( 'MANGA_SHELF_RAKUTEN_AFFILIATE_ID', 'your-affiliate-id' );
 
 ### Amazonリンクを設定する
 
-各巻のAmazonリンクは、保存済みのISBNをAmazon.co.jpの書籍検索へ渡して作成します。Amazonの商品情報APIは利用しないため、APIキーは不要です。
+各巻のAmazonリンクは、保存済みのISBN-13を検証してISBN-10へ変換し、Amazon.co.jpの商品ページURLを作成します。変換できないISBNは書籍検索へ移動します。Amazonの商品情報APIは利用しないため、APIキーは不要です。
 
 1. Amazonアソシエイトを利用する場合は、Amazonアソシエイト・セントラルでトラッキングIDを確認します。
 2. WordPress管理画面の「漫画 → Amazon設定」を開きます。
 3. 「アソシエイト・トラッキングID」を入力して保存します。
-4. サイトエディターの「漫画：巻一覧」の内側へ「漫画：各巻のAmazonリンク」を追加します。
+4. サイトエディターの「漫画：巻一覧」の内側へ標準の「ボタン」ブロックを追加し、その個別ボタンとして「漫画：各巻のAmazonボタン」を選びます。
 
-トラッキングIDを設定しなくても通常のAmazon検索リンクとして利用できます。`wp-config.php`で管理する場合は次の定数を利用できます。
+トラッキングIDを設定しなくても通常のAmazon商品リンクとして利用できます。`wp-config.php`で管理する場合は次の定数を利用できます。
 
 ```php
 define( 'MANGA_SHELF_AMAZON_TRACKING_ID', 'your-tracking-id-22' );
 ```
 
-ISBNとAmazonのASINが同一とは限らないため、Manga ShelfはISBNから商品詳細URLを推測せず、書籍検索ページへリンクします。トラッキングID使用時はリンク直後の「（広告）」と、Amazon指定のアソシエイト表記を自動出力します。あわせて、Amazonアソシエイトの登録サイト、リンク確認、サイト情報やプライバシーポリシーなども最新の規約に合わせて確認してください。
+`978`から始まる有効なISBN-13はISBN-10へ変換し、Amazonが書籍向けに案内している`/dp/ISBN-10/ref=nosim`形式の商品ページへリンクします。`979`から始まるISBNなど変換できない場合は、ISBNを使った書籍検索へフォールバックします。ボタンの文言は標準のボタンと同じように編集できます。トラッキングID使用時はリンクの`rel`属性へ`sponsored`を自動設定します。
+
+Amazon指定のアソシエイト開示文は公開画面へ自動出力しません。「漫画 → Amazon設定」に表示される文面を、「このサイトについて」やプライバシーポリシーなど、サイト内の分かりやすい場所へ手動で掲載してください。Amazonアソシエイトの登録サイト、リンク確認、開示、プライバシーポリシーなどは最新の規約に合わせて確認してください。
 
 ## 2. 楽天から漫画を登録する
 
@@ -176,8 +178,16 @@ your-theme/
             <!-- wp:manga-shelf/volume-title {"level":3} /-->
             <!-- wp:manga-shelf/volume-number /-->
             <!-- wp:manga-shelf/volume-release-date /-->
-            <!-- wp:manga-shelf/volume-purchase-link /-->
-            <!-- wp:manga-shelf/volume-amazon-link /-->
+            <!-- wp:buttons -->
+            <div class="wp-block-buttons">
+                <!-- wp:button {"linkTarget":"_blank","className":"manga-shelf-volume-rakuten-button","metadata":{"bindings":{"url":{"source":"manga-shelf/volume-store","args":{"store":"rakuten"}},"rel":{"source":"manga-shelf/volume-store","args":{"store":"rakuten"}}}}} -->
+                <div class="wp-block-button manga-shelf-volume-rakuten-button"><a class="wp-block-button__link wp-element-button" target="_blank">楽天で見る</a></div>
+                <!-- /wp:button -->
+                <!-- wp:button {"linkTarget":"_blank","className":"manga-shelf-volume-amazon-button","metadata":{"bindings":{"url":{"source":"manga-shelf/volume-store","args":{"store":"amazon"}},"rel":{"source":"manga-shelf/volume-store","args":{"store":"amazon"}}}}} -->
+                <div class="wp-block-button manga-shelf-volume-amazon-button"><a class="wp-block-button__link wp-element-button" target="_blank">Amazonで見る</a></div>
+                <!-- /wp:button -->
+            </div>
+            <!-- /wp:buttons -->
         </div>
         <!-- /wp:group -->
     </div>
@@ -264,17 +274,22 @@ get_footer();
 - 漫画：各巻の巻数
 - 漫画：各巻の発売日
 - 漫画：各巻のISBN
-- 漫画：各巻の楽天リンク
-- 漫画：各巻のAmazonリンク
+- 漫画：各巻の楽天ボタン（標準の個別ボタン`core/button`のバリエーション）
+- 漫画：各巻のAmazonボタン（標準の個別ボタン`core/button`のバリエーション）
 
-たとえば「左側に書影、右側にタイトルと発売日」「書影を上、楽天・Amazonリンクを下」「タイトルから楽天へリンク」といった構成にできます。書影ブロックでは幅、タイトルブロックではHTML要素と商品リンク、巻数・発売日・ISBNでは前後の文字、楽天・Amazonリンクではリンク文言を設定できます。
+たとえば「左側に書影、右側にタイトルと発売日」「書影を上、楽天・Amazonボタンを下」「タイトルから楽天へリンク」といった構成にできます。書影ブロックでは幅、タイトルブロックではHTML要素と商品リンク、巻数・発売日・ISBNでは前後の文字を設定できます。楽天・Amazonボタンは標準の個別ボタンなので、文言、色、枠線、余白、幅、塗りつぶし・輪郭などを通常どおり変更できます。商品URLとリンクの`rel`属性だけが各巻のデータへ自動接続されます。
 
 編集手順は次のとおりです。
 
 1. 「外観 → エディター → テンプレート」で個別作品テンプレートを開きます。
 2. 「漫画：巻一覧」を選択します。
 3. 内側のグループや巻情報ブロックを移動・追加・削除します。
-4. 保存し、作品ページで複数巻に同じレイアウトが適用されていることを確認します。
+4. 商品リンクを追加する場合は、標準の「ボタン」コンテナ（`core/buttons`）を追加し、その内側の個別ボタン（`core/button`）として「漫画：各巻の楽天ボタン」または「漫画：各巻のAmazonボタン」を選びます。
+5. 保存し、作品ページで複数巻に同じレイアウトが適用されていることを確認します。
+
+楽天・Amazonの機能は複数ボタンを束ねる`core/buttons`のバリエーションではなく、内側に入る個別の`core/button`のバリエーションとして登録されています。横並びや縦並びを管理するために`core/buttons`が外側のコンテナとして使われますが、各商品ボタン自体は1個ずつ自由に移動・複製・装飾できます。安全な商品URLを生成できない巻では、そのストアのボタンは公開画面へ出力されません。
+
+0.1.7以前のテンプレートに保存済みの「漫画：各巻の楽天リンク」「漫画：各巻のAmazonリンク」は、表示互換のため引き続き動作します。新しく追加する場合は個別ボタンのバリエーションを利用してください。
 
 巻情報がない作品では何も出力しません。テンプレートと投稿本文の両方に配置すると二重表示になるため、どちらか一方に配置してください。
 

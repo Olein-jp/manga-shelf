@@ -2,11 +2,11 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "manga-shelf/volume-amazon-link",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "title": "漫画：各巻のAmazonリンク",
   "category": "widgets",
   "icon": "cart",
-  "description": "繰り返し表示中の巻をAmazon.co.jpで検索するリンクです。",
+  "description": "繰り返し表示中の巻のAmazon.co.jp商品リンクです。",
   "textdomain": "manga-shelf",
   "ancestor": [ "manga-shelf/volume-list" ],
   "usesContext": [ "mangaShelf/volume" ],
@@ -14,6 +14,7 @@
     "label": { "type": "string", "default": "Amazonで見る" }
   },
   "supports": {
+    "inserter": false,
     "color": { "text": true, "background": true },
     "spacing": { "margin": true, "padding": true },
     "typography": { "fontSize": true }

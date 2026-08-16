@@ -83,8 +83,10 @@ final class Templates {
 			. '<!-- wp:manga-shelf/volume-title {"level":3} /-->'
 			. '<!-- wp:manga-shelf/volume-number /-->'
 			. '<!-- wp:manga-shelf/volume-release-date /-->'
-			. '<!-- wp:manga-shelf/volume-purchase-link /-->'
-			. '<!-- wp:manga-shelf/volume-amazon-link /-->'
+			. '<!-- wp:buttons --><div class="wp-block-buttons">'
+			. '<!-- wp:button {"linkTarget":"_blank","className":"manga-shelf-volume-rakuten-button","metadata":{"bindings":{"url":{"source":"manga-shelf/volume-store","args":{"store":"rakuten"}},"rel":{"source":"manga-shelf/volume-store","args":{"store":"rakuten"}}}}} --><div class="wp-block-button manga-shelf-volume-rakuten-button"><a class="wp-block-button__link wp-element-button" target="_blank">楽天で見る</a></div><!-- /wp:button -->'
+			. '<!-- wp:button {"linkTarget":"_blank","className":"manga-shelf-volume-amazon-button","metadata":{"bindings":{"url":{"source":"manga-shelf/volume-store","args":{"store":"amazon"}},"rel":{"source":"manga-shelf/volume-store","args":{"store":"amazon"}}}}} --><div class="wp-block-button manga-shelf-volume-amazon-button"><a class="wp-block-button__link wp-element-button" target="_blank">Amazonで見る</a></div><!-- /wp:button -->'
+			. '</div><!-- /wp:buttons -->'
 			. '</div><!-- /wp:group -->'
 			. '</div><!-- /wp:group -->'
 			. '<!-- /wp:manga-shelf/volume-list -->';

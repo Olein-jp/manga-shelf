@@ -9,8 +9,26 @@
 				[ 'manga-shelf/volume-title', { level: 3 } ],
 				[ 'manga-shelf/volume-number' ],
 				[ 'manga-shelf/volume-release-date' ],
-				[ 'manga-shelf/volume-purchase-link' ],
-				[ 'manga-shelf/volume-amazon-link' ]
+				[ 'core/buttons', {}, [
+					[ 'core/button', {
+						text: i18n.__( '楽天で見る', 'manga-shelf' ),
+						linkTarget: '_blank',
+						className: 'manga-shelf-volume-rakuten-button',
+						metadata: { bindings: {
+							url: { source: 'manga-shelf/volume-store', args: { store: 'rakuten' } },
+							rel: { source: 'manga-shelf/volume-store', args: { store: 'rakuten' } }
+						} }
+					} ],
+					[ 'core/button', {
+						text: i18n.__( 'Amazonで見る', 'manga-shelf' ),
+						linkTarget: '_blank',
+						className: 'manga-shelf-volume-amazon-button',
+						metadata: { bindings: {
+							url: { source: 'manga-shelf/volume-store', args: { store: 'amazon' } },
+							rel: { source: 'manga-shelf/volume-store', args: { store: 'amazon' } }
+						} }
+					} ]
+				] ]
 			] ]
 		] ]
 	];

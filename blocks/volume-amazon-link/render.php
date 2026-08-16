@@ -5,7 +5,6 @@
  * @package MangaShelf
  */
 
-use MangaShelf\Integrations\Amazon\Attribution;
 use MangaShelf\Integrations\Amazon\Link;
 use MangaShelf\Integrations\Amazon\Settings;
 
@@ -23,4 +22,3 @@ $rel   = Settings::tracking_id() ? 'nofollow sponsored noopener' : 'nofollow noo
 <?php if ( Settings::tracking_id() ) : ?>
 	<span class="manga-shelf-affiliate-disclosure"><?php esc_html_e( '（広告）', 'manga-shelf' ); ?></span>
 <?php endif; ?>
-<?php Attribution::render_once(); ?>
