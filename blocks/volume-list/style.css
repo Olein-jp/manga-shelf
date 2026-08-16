@@ -1,0 +1,26 @@
+.manga-shelf-volume-list__items {
+	display: grid;
+	gap: 0.75rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.manga-shelf-volume-list__item {
+	align-items: baseline;
+	border-bottom: 1px solid currentColor;
+	display: grid;
+	gap: 0.5rem 1rem;
+	grid-template-columns: minmax(0, 1fr) auto auto;
+	padding-block: 0.75rem;
+}
+
+.manga-shelf-volume-list__title {
+	font-weight: 600;
+}
+
+@media (max-width: 600px) {
+	.manga-shelf-volume-list__item {
+		grid-template-columns: 1fr;
+	}
+}

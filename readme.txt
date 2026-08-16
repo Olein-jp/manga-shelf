@@ -1,0 +1,35 @@
+=== Manga Shelf ===
+Contributors: olein
+Tags: manga, books, library, block-editor
+Requires at least: 6.7
+Requires PHP: 7.4
+Stable tag: 0.1.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+漫画作品、既刊情報、読書状態を管理し、ブロックテーマで自由に表示します。
+
+== Description ==
+
+Manga Shelf は、漫画作品を自分の本棚として登録・公開するためのプラグインです。
+楽天ブックス書籍検索APIから作品と既刊を取り込み、巻一覧ブロック、Block Bindings、パターン、プラグインテンプレートで表示できます。
+
+v0.1 は紙の通常版コミックスを対象とします。定期新刊監視とAmazon連携は今後のバージョンで追加予定です。
+
+== Installation ==
+
+1. プラグインをアップロードして有効化します。
+2. 「漫画 → 楽天API設定」で楽天Web ServiceのアプリケーションIDを設定します。
+3. 「漫画 → 楽天から追加」で作品を検索・登録します。
+
+== Frequently Asked Questions ==
+
+= アンインストールでデータは消えますか？ =
+
+既定では保持されます。`MANGA_SHELF_DELETE_DATA` を `true` に設定した場合のみ、アンインストール時に作品、巻テーブル、設定を削除します。
+
+== Changelog ==
+
+= 0.1.0 =
+
+* MVPを実装。

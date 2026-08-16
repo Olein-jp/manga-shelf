@@ -3,8 +3,8 @@
  * Plugin Name:       Manga Shelf
  * Plugin URI:        https://github.com/Olein-jp/manga-shelf
  * Description:       漫画を管理するための WordPress プラグインです。
- * Version:           0.0.0-dev
- * Requires at least: 5.9
+ * Version:           0.1.0-dev
+ * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Koji Kuno
  * Author URI:        https://olein-design.com
@@ -22,13 +22,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+define( 'MANGA_SHELF_VERSION', '0.1.0-dev' );
+define( 'MANGA_SHELF_FILE', __FILE__ );
+define( 'MANGA_SHELF_PATH', plugin_dir_path( __FILE__ ) );
+define( 'MANGA_SHELF_URL', plugin_dir_url( __FILE__ ) );
+
+register_activation_hook( __FILE__, array( 'MangaShelf\\Database\\Schema', 'activate' ) );
+
+add_action(
+	'plugins_loaded',
+	static function () {
+		MangaShelf\Plugin::instance()->register();
+	}
+);
+
 new Inc2734\WP_GitHub_Plugin_Updater\Bootstrap(
 	plugin_basename( __FILE__ ),
 	'Olein-jp',
 	'manga-shelf',
 	array(
 		'homepage'     => 'https://github.com/Olein-jp/manga-shelf',
-		'requires'     => '5.9',
+		'requires'     => '6.7',
 		'requires_php' => '7.4',
 	)
 );

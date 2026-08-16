@@ -3,6 +3,9 @@
 	<description>PHP_CodeSniffer rules for the Manga Shelf plugin.</description>
 
 	<file>manga-shelf.php</file>
+	<file>includes</file>
+	<file>blocks</file>
+	<file>uninstall.php</file>
 
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
@@ -12,7 +15,10 @@
 	<arg value="ps"/>
 	<arg name="extensions" value="php"/>
 
-	<rule ref="WordPress"/>
+	<rule ref="WordPress">
+		<!-- The plugin uses Composer PSR-4 class filenames. -->
+		<exclude name="WordPress.Files.FileName"/>
+	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">

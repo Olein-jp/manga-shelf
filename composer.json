@@ -11,6 +11,11 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
     "wp-coding-standards/wpcs": "^3.4.1"
   },
+  "autoload": {
+    "psr-4": {
+      "MangaShelf\\": "includes/"
+    }
+  },
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
