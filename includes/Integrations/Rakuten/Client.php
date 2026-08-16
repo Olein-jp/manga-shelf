@@ -47,14 +47,16 @@ final class Client {
 		if ( Settings::affiliate_id() ) {
 			$args['affiliateId'] = Settings::affiliate_id();
 		}
+		$site_url = home_url( '/' );
 
 		$response = wp_safe_remote_get(
 			add_query_arg( $args, self::ENDPOINT ),
 			array(
 				'timeout'    => 15,
-				'user-agent' => 'Manga Shelf/' . MANGA_SHELF_VERSION . '; ' . home_url( '/' ),
+				'user-agent' => 'Mozilla/5.0 (compatible; Manga Shelf/' . MANGA_SHELF_VERSION . '; +' . $site_url . ')',
 				'headers'    => array(
-					'Referer' => home_url( '/' ),
+					'Origin'  => $this->request_origin( $site_url ),
+					'Referer' => $site_url,
 				),
 			)
 		);
@@ -78,6 +80,25 @@ final class Client {
 		}
 
 		return array_map( array( $this, 'normalize_item' ), $payload['Items'] );
+	}
+
+	/**
+	 * Build the request origin from the public site URL.
+	 *
+	 * @param string $site_url Public site URL.
+	 * @return string
+	 */
+	private function request_origin( $site_url ) {
+		$parts = wp_parse_url( $site_url );
+		if ( ! is_array( $parts ) || empty( $parts['scheme'] ) || empty( $parts['host'] ) ) {
+			return untrailingslashit( $site_url );
+		}
+
+		$origin = $parts['scheme'] . '://' . $parts['host'];
+		if ( ! empty( $parts['port'] ) ) {
+			$origin .= ':' . (int) $parts['port'];
+		}
+		return $origin;
 	}
 
 	/**

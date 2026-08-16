@@ -69,7 +69,7 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 
 ## リリース
 
-プラグインの開発版バージョンは `0.1.3-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
+プラグインの開発版バージョンは `0.1.4-dev` です。SemVer 形式のタグを push すると GitHub Actions が次を実行します。
 
 1. Composer の本番依存関係を含む `manga-shelf-<tag>.zip` を生成する
 2. ZIP 内のプラグインバージョンをタグ名に置換する
@@ -78,8 +78,8 @@ define( 'MANGA_SHELF_DELETE_DATA', true );
 最初のリリースは次のように作成できます。
 
 ```bash
-git tag 0.1.3
-git push origin 0.1.3
+git tag 0.1.4
+git push origin 0.1.4
 ```
 
-GitHub Release が公開されると、`0.1.3-dev` をインストールした WordPress の管理画面に `0.1.3` の更新通知が表示され、Release に添付された ZIP から更新できます。
+GitHub Release が公開されると、`0.1.4-dev` をインストールした WordPress の管理画面に `0.1.4` の更新通知が表示され、Release に添付された ZIP から更新できます。
